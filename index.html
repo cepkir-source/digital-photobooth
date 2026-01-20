@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Simple Photo Booth</title>
+    <style>
+        body { font-family: 'Arial', sans-serif; text-align: center; background: #222; color: white; }
+        .booth-container { position: relative; width: 640px; margin: 20px auto; border: 5px solid #fff; border-radius: 10px; overflow: hidden; }
+        video { width: 640px; height: 480px; background: #333; transform: scaleX(-1); } /* Mirror effect */
+        canvas { display: none; } /* Tersembunyi, hanya untuk proses jepret */
+        #countdown { position: absolute; top: 40%; left: 50%; transform: translate(-50%, -50%); font-size: 100px; color: yellow; display: none; }
+        .controls { margin-top: 20px; }
+        button { padding: 15px 30px; font-size: 18px; cursor: pointer; background: #ff4757; color: white; border: none; border-radius: 50px; }
+    </style>
+</head>
+<body>
+    <h1>📸 Digital Photo Booth</h1>
+    
+    <div class="booth-container">
+        <video id="video" autoplay></video>
+        <div id="countdown">3</div>
+    </div>
+
+    <div class="controls">
+        <button onclick="takeSnap()">AMBIL FOTO (3s)</button>
+    </div>
+
+    <canvas id="canvas" width="640" height="480"></canvas>
