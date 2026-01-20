@@ -25,3 +25,56 @@
     </div>
 
     <canvas id="canvas" width="640" height="480"></canvas>
+    
+<script>
+    const video = document.getElementById('video');
+    const canvas = document.getElementById('canvas');
+    const countdownEl = document.getElementById('countdown');
+
+    // 1. Akses Kamera
+    navigator.mediaDevices.getUserMedia({ video: true, audio: false })
+        .then(stream => { video.srcObject = stream; })
+        .catch(err => { alert("Kamera tidak ditemukan!"); });
+
+    function takeSnap() {
+        let count = 3;
+        countdownEl.style.display = 'block';
+        countdownEl.innerText = count;
+
+        // 2. Countdown Logic
+        const timer = setInterval(() => {
+            count--;
+            countdownEl.innerText = count;
+            if (count === 0) {
+                clearInterval(timer);
+                countdownEl.style.display = 'none';
+                capturePhoto();
+            }
+        }, 1000);
+    }
+
+    function capturePhoto() {
+        const context = canvas.getContext('2d');
+        
+        // Balikkan canvas agar hasil foto tidak terbalik (mirror)
+        context.translate(640, 0);
+        context.scale(-1, 1);
+        
+        // Ambil gambar dari video
+        context.drawImage(video, 0, 0, 640, 480);
+
+        // 3. Tambahkan Frame (Opsional)
+        context.setTransform(1, 0, 0, 1, 0, 0); // Reset transform
+        context.strokeStyle = "white";
+        context.lineWidth = 40;
+        context.strokeRect(0, 0, canvas.width, canvas.height); // Frame Putih sederhana
+
+        // 4. Download Otomatis
+        const link = document.createElement('a');
+        link.download = `PhotoBooth_${Date.now()}.png`;
+        link.href = canvas.toDataURL();
+        link.click();
+    }
+</script>
+</body>
+</html>
